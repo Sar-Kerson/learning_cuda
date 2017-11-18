@@ -58,7 +58,7 @@ __global__ void sumOnDevice_multi_block(float *A, float *B, float *C)
 
 int main(void)
 {
-    int nElem = 102400;   //2048 will fail
+    int nElem = 102400;
     size_t nByte = nElem * sizeof(float);
     float *d_A, *d_B, *d_C;
     float *h_A, *h_B, *h_C, *res;
@@ -80,7 +80,7 @@ int main(void)
     double iStart = cpuSecond();
     //sumOnDevice_single_block <<<1, nElem>>>(d_A, d_B, d_C);
     //cudaDeviceReset();
-    int threadInBlock = 1024;
+    int threadInBlock = 1024;       //in my case, greater than 1024 will failed; I use TX1;
     dim3 block(threadInBlock);
     dim3 grid ((nElem + block.x - 1) / block.x);
     sumOnDevice_multi_block <<<grid, block>>>(d_A, d_B, d_C);
